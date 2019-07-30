@@ -238,6 +238,12 @@ class EmailTest extends TestCase
         (new Email())->getBody();
     }
 
+    public function testGenerateBodyDoesNotThrowWhenAttachmentsPresent()
+    {
+        $body = (new Email())->attachFromPath(__FILE__)->getBody();
+        $this->assertNotEmpty($body);
+    }
+
     public function testGetBody()
     {
         $e = new Email();
