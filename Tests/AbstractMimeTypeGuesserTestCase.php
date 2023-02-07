@@ -14,7 +14,7 @@ namespace Symfony\Component\Mime\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\MimeTypeGuesserInterface;
 
-abstract class AbstractMimeTypeGuesserTest extends TestCase
+abstract class AbstractMimeTypeGuesserTestCase extends TestCase
 {
     public static function tearDownAfterClass(): void
     {
