@@ -244,6 +244,11 @@ final class Headers
         throw new LogicException(sprintf('The "%s" header must be an instance of "%s" (got "%s").', $header->getName(), implode('" or "', $headerClasses), get_debug_type($header)));
     }
 
+    //php magic function
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
     public function toString(): string
     {
         $string = '';
