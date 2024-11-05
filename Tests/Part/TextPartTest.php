@@ -103,21 +103,29 @@ class TextPartTest extends TestCase
     public function testCustomEncoderNeedsToRegisterFirst()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The encoding must be one of "quoted-printable", "base64", "8bit", "exception_test" ("upper_encoder" given).');
-        TextPart::addEncoder('exception_test', $this->createMock(ContentEncoderInterface::class));
-        new TextPart('content', 'utf-8', 'plain', 'upper_encoder');
+        $this->expectExceptionMessage('The encoding must be one of "quoted-printable", "base64", "8bit", "upper_encoder" ("this_encoding_does_not_exist" given).');
+
+        $upperEncoder = $this->createMock(ContentEncoderInterface::class);
+        $upperEncoder->method('getName')->willReturn('upper_encoder');
+
+        TextPart::addEncoder($upperEncoder);
+        new TextPart('content', 'utf-8', 'plain', 'this_encoding_does_not_exist');
     }
 
     public function testOverwriteDefaultEncoder()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('You are not allowed to change the default encoders ("quoted-printable", "base64", and "8bit").');
-        TextPart::addEncoder('8bit', $this->createMock(ContentEncoderInterface::class));
+
+        $base64Encoder = $this->createMock(ContentEncoderInterface::class);
+        $base64Encoder->method('getName')->willReturn('base64');
+
+        TextPart::addEncoder($base64Encoder);
     }
 
     public function testCustomEncoding()
     {
-        TextPart::addEncoder('upper_encoder', new class implements ContentEncoderInterface {
+        TextPart::addEncoder(new class implements ContentEncoderInterface {
             public function encodeByteStream($stream, int $maxLineLength = 0): iterable
             {
                 $filter = stream_filter_append($stream, 'string.toupper', \STREAM_FILTER_READ);

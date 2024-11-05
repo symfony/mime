@@ -220,13 +220,13 @@ class TextPart extends AbstractPart
         return self::$encoders[$this->encoding];
     }
 
-    public static function addEncoder(string $name, ContentEncoderInterface $encoder): void
+    public static function addEncoder(ContentEncoderInterface $encoder): void
     {
-        if (\in_array($name, self::DEFAULT_ENCODERS, true)) {
+        if (\in_array($encoder->getName(), self::DEFAULT_ENCODERS, true)) {
             throw new InvalidArgumentException('You are not allowed to change the default encoders ("quoted-printable", "base64", and "8bit").');
         }
 
-        self::$encoders[$name] = $encoder;
+        self::$encoders[$encoder->getName()] = $encoder;
     }
 
     private function chooseEncoding(): string
