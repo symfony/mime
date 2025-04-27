@@ -13,7 +13,6 @@ namespace Symfony\Component\Mime\Part\Multipart;
 
 use Symfony\Component\Mime\Exception\InvalidArgumentException;
 use Symfony\Component\Mime\Part\AbstractMultipartPart;
-use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\TextPart;
 
 /**
