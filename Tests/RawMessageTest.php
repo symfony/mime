@@ -77,8 +77,8 @@ class RawMessageTest extends TestCase
 
     public function testToIterableOnResourceRewindsAndYieldsLines()
     {
-        $handle = \fopen('php://memory', 'r+');
-        \fwrite($handle, "line1\nline2\nline3\n");
+        $handle = fopen('php://memory', 'r+');
+        fwrite($handle, "line1\nline2\nline3\n");
 
         $message = new RawMessage($handle);
         $this->assertSame("line1\nline2\nline3\n", implode('', iterator_to_array($message->toIterable())));
