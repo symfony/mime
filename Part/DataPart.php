@@ -66,7 +66,7 @@ class DataPart extends TextPart
     public function setContentId(string $cid): static
     {
         if (!str_contains($cid, '@')) {
-            throw new InvalidArgumentException(sprintf('Invalid cid "%s".', $cid));
+            throw new InvalidArgumentException(\sprintf('Invalid cid "%s".', $cid));
         }
 
         $this->cid = $cid;
