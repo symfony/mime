@@ -11,6 +11,9 @@
 
 namespace Symfony\Component\Mime\Tests\Crypto;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use Symfony\Component\Mime\Address;
@@ -18,11 +21,8 @@ use Symfony\Component\Mime\Crypto\DkimSigner;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Message;
 
-/**
- * @group time-sensitive
- *
- * @requires extension openssl
- */
+#[RequiresPhpExtension('openssl')]
+#[Group('time-sensitive')]
 class DkimSignerTest extends TestCase
 {
     private static string $pk = <<<EOF
@@ -43,9 +43,7 @@ HIyrMg2pQ46h2ybEuB50Cs+xF19KwBuGafBtRjkvXdU=
 -----END RSA PRIVATE KEY-----
 EOF;
 
-    /**
-     * @dataProvider getSignData
-     */
+    #[DataProvider('getSignData')]
     public function testSign(int $time, string $bodyCanon, string $headerCanon, string $header)
     {
         ClockMock::withClockMock($time);
@@ -107,9 +105,7 @@ EOF;
         $signer->sign($message, []);
     }
 
-    /**
-     * @dataProvider getCanonicalizeHeaderData
-     */
+    #[DataProvider('getCanonicalizeHeaderData')]
     public function testCanonicalizeHeader(string $bodyCanon, string $canonBody, string $body, int $maxLength)
     {
         $message = (new Email())
