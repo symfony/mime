@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Mime\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\LogicException;
@@ -287,9 +288,7 @@ EOF;
         $this->assertStringMatchesFormat($expectedJson, json_encode(json_decode($serialized), \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES));
     }
 
-    /**
-     * @dataProvider ensureValidityProvider
-     */
+    #[DataProvider('ensureValidityProvider')]
     public function testEnsureValidity(array $headers, ?string $exceptionClass, ?string $exceptionMessage)
     {
         if ($exceptionClass) {
