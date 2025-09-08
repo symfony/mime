@@ -53,7 +53,7 @@ class FileinfoMimeTypeGuesser implements MimeTypeGuesserInterface
         }
 
         try {
-            $finfo = self::$finfoCache[$this->magicFile] ??= new \finfo(\FILEINFO_MIME_TYPE, $this->magicFile);
+            $finfo = self::$finfoCache[$this->magicFile ?? ''] ??= new \finfo(\FILEINFO_MIME_TYPE, $this->magicFile);
         } catch (\Exception $e) {
             throw new RuntimeException($e->getMessage());
         }
