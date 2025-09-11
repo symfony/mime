@@ -65,6 +65,7 @@ class MessagePart extends DataPart
     public function __unserialize(array $data): void
     {
         $this->message = $data['message'] ?? $data["\0".self::class."\0message"];
+
         $this->__construct($this->message);
     }
 }
