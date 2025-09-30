@@ -18,9 +18,6 @@ use Symfony\Component\Mime\Header\Headers;
  */
 class SMimePart extends AbstractPart
 {
-    /** @internal, to be removed in 8.0 */
-    protected Headers $_headers;
-
     public function __construct(
         private iterable|string $body,
         private string $type,
