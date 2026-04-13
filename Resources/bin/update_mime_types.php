@@ -17,7 +17,7 @@ if ('cli' !== \PHP_SAPI) {
 $data = json_decode(file_get_contents('https://cdn.jsdelivr.net/gh/jshttp/mime-db/db.json'), true);
 $new = [];
 foreach ($data as $mimeType => $mimeTypeInformation) {
-    if (!\array_key_exists('extensions', $mimeTypeInformation)) {
+    if (!array_key_exists('extensions', $mimeTypeInformation)) {
         continue;
     }
     $new[$mimeType] = $mimeTypeInformation['extensions'];
@@ -133,11 +133,11 @@ ksort($map);
 
 foreach ($map as $mimeType => $extensions) {
     foreach ($exts as $ext => $types) {
-        if (\in_array($mimeType, $types, true)) {
+        if (in_array($mimeType, $types, true)) {
             array_unshift($extensions, $ext);
         }
     }
-    $data .= \sprintf("        '%s' => ['%s'],\n", $mimeType, implode("', '", array_unique($extensions)));
+    $data .= sprintf("        '%s' => ['%s'],\n", $mimeType, implode("', '", array_unique($extensions)));
 }
 $data .= $post;
 
@@ -159,7 +159,7 @@ foreach (explode("\n", $data) as $line) {
         if (1 === $state) {
             $state = 2;
             foreach ($exts as $ext => $mimeTypes) {
-                $updated .= \sprintf("        '%s' => ['%s'],\n", $ext, implode("', '", array_unique($mimeTypes)));
+                $updated .= sprintf("        '%s' => ['%s'],\n", $ext, implode("', '", array_unique($mimeTypes)));
             }
         }
         $updated .= $line."\n";
@@ -168,7 +168,7 @@ foreach (explode("\n", $data) as $line) {
     $state = 1;
 }
 
-$updated = preg_replace('{Updated from upstream on .+?\.}', \sprintf('Updated from upstream on %s.', date('Y-m-d')), $updated, -1);
+$updated = preg_replace('{Updated from upstream on .+?\.}', sprintf('Updated from upstream on %s.', date('Y-m-d')), $updated, -1);
 
 file_put_contents($output, rtrim($updated, "\n")."\n");
 
