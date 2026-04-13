@@ -105,7 +105,7 @@ class RawMessageTest extends TestCase
             'string' => ['some string', true],
             'traversable' => [new \ArrayObject(['some', ' ', 'string']), true],
             'array' => [['some', ' ', 'string'], true],
-            'generator' => [(function () {
+            'generator' => [(static function () {
                 yield 'some';
                 yield ' ';
                 yield 'string';
