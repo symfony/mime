@@ -31,8 +31,53 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+class EmailTestToStringGadget
+{
+    public static bool $fired = false;
+
+    public function __toString(): string
+    {
+        self::$fired = true;
+
+        return '';
+    }
+}
+
 class EmailTest extends TestCase
 {
+    /**
+     * @dataProvider provideTrampolineSlots
+     */
+    public function testUnserializeRejectsObjectInTypedCharsetProperty(int $slot)
+    {
+        $email = new Email();
+        $email->text('text body');
+        $email->html('html body');
+        $data = $email->__serialize();
+        $data[$slot] = new EmailTestToStringGadget();
+        $payload = \sprintf('O:%d:"%s":%d:{', \strlen(Email::class), Email::class, \count($data));
+        foreach ($data as $key => $value) {
+            $payload .= serialize($key).serialize($value);
+        }
+        $payload .= '}';
+        EmailTestToStringGadget::$fired = false;
+
+        try {
+            unserialize($payload);
+            $this->fail('Expected BadMethodCallException.');
+        } catch (\BadMethodCallException $e) {
+        }
+
+        $this->assertFalse(EmailTestToStringGadget::$fired, '__toString gadget must not fire during unserialize');
+    }
+
+    public static function provideTrampolineSlots(): iterable
+    {
+        // [text, textCharset, html, htmlCharset, attachments, parentData]
+        yield 'textCharset' => [1];
+        yield 'htmlCharset' => [3];
+    }
+
     public function testSubject()
     {
         $e = new Email();
