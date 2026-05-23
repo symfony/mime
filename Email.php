@@ -569,6 +569,10 @@ class Email extends Message
      */
     public function __unserialize(array $data): void
     {
+        if (($data[1] ?? null) instanceof \Stringable || ($data[3] ?? null) instanceof \Stringable) {
+            throw new \BadMethodCallException('Cannot unserialize '.self::class);
+        }
+
         [$this->text, $this->textCharset, $this->html, $this->htmlCharset, $this->attachments, $parentData] = $data;
 
         parent::__unserialize($parentData);
