@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Mime\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\Address;
@@ -45,9 +46,7 @@ class EmailTestToStringGadget
 
 class EmailTest extends TestCase
 {
-    /**
-     * @dataProvider provideTrampolineSlots
-     */
+    #[DataProvider('provideTrampolineSlots')]
     public function testUnserializeRejectsObjectInTypedCharsetProperty(int $slot)
     {
         $email = new Email();
